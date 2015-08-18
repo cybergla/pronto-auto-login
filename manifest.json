@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Pronto Auto Login",
+  "version": "1",
+  "browser_action":
+  {
+    "default_icon": "icon.png"
+  },
+  "content_scripts":
+  [{
+    "matches": ["http://phc.prontonetworks.com/*"],
+    "js": ["form_submit.js"],
+    "run_at": "document_end"
+  }],
+  "background":
+  {
+    "persistent": false,
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "tabs",
+    "http://phc.prontonetworks.com/*"
+    ]
+
+}
