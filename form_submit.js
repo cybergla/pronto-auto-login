@@ -10,15 +10,12 @@ try {
   console.log("Pronto Auto Login Error: Could not get form");
 }
 
-
-
 try {
   var err = document.getElementsByClassName('errorText10')[0];
   console.log(err);
   if(err){
-    //alert("Incorrect credentials");
-
-    window.close();
+    alert("Incorrect credentials! Please check your Username and Password.");
+    chrome.runtime.sendMessage({error : true});
   }
 }
 catch (e) {
