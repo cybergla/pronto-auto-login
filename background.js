@@ -1,4 +1,5 @@
 var loginURL = "http://phc.prontonetworks.com"; //URL for pronto login
+var logoutURL = "http://phc.prontonetworks.com/cgi-bin/authlogout";
 
 chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
   if (message.clicked) { //from the login now button
@@ -8,6 +9,7 @@ chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
   }
 });
 
+
 chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
   if (message.error){   //for incorrect credentials
     console.log("error message");
@@ -15,6 +17,14 @@ chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
       var tab = tab[0];
       console.log(tab.id);
       chrome.tabs.remove(tab.id, function() { });
+    });
+  }
+});
+
+chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
+  if (message.logout){   //for logging out
+    chrome.tabs.create({url: logoutURL, active: false}, function () {
+      console.log("logging out");
     });
   }
 });

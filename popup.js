@@ -8,9 +8,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   //open prontonetworks in new tab
   var loginButton =  document.getElementById('login');
-  loginButton.addEventListener('click',function () {
+  loginButton.addEventListener('click', function () {
     chrome.runtime.sendMessage({clicked : true});
   })
+
+  //logout
+  document.getElementById('logout').addEventListener('click',function () {
+    chrome.runtime.sendMessage({logout : true});
+  });
 
   //get new login data from user
   submitButton.addEventListener('click', function() {
