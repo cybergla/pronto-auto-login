@@ -5,18 +5,22 @@
     <script src="popup.js"></script>
   </head>
   <body>
-    <form action="" method="post" id="form1">
-      User Name: <br>
-      <input type="text" name="username" id="username">
-      <br>
-      <br>
-      Password: <br>
-      <input type="password" name="password" id="password">
-      <br>
-      <br>
-      <button type="button" id="submit_form" >Save</button>
-      <button type="button" id="login">Login</button>
-      <button type="button" id="logout">Logout</button>
-    </form>
+    <div id="content">
+      <form action="" method="post" id="form1">
+        User Name: <br>
+        <input type="text" name="username" id="username">
+        <br>
+        <br>
+        Password: <br>
+        <input type="password" name="password" id="password">
+        <br>
+        <br>
+        <button type="button" id="submit_form">Save</button>
+        <button type="button" id="login">Login</button>
+        <button type="button" id="logout">Logout</button>
+      </form>
+    </div>
+    <div id='status'>
+    </div>
   </body>
 </html>

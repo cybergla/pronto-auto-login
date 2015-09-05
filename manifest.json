@@ -10,12 +10,6 @@
   "icons": { "16": "icon16.png",
            "48": "icon48.png",
           "128": "icon128.png" },
-  "content_scripts":
-  [{
-    "matches": ["http://phc.prontonetworks.com/*"],
-    "js": ["form_submit.js"],
-    "run_at": "document_end"
-  }],
   "background":
   {
     "persistent": false,
@@ -26,5 +20,4 @@
     "storage",
     "http://phc.prontonetworks.com/*"
     ]
-
 }

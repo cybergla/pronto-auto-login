@@ -1,44 +1,11 @@
-var loginURL = "http://phc.prontonetworks.com"; //URL for pronto login
-var logoutURL = "http://phc.prontonetworks.com/cgi-bin/authlogout";
-
-chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
-  if (message.clicked) { //from the login now button
-    chrome.tabs.create({url: loginURL, active: false}, function () {
-      console.log("login opened");
-    });
-  }
-});
-
-
-chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
-  if (message.error){   //for incorrect credentials
-    console.log("error message");
-    chrome.tabs.query({url: "http://phc.prontonetworks.com/*"},function(tab) {
-      var tab = tab[0];
-      console.log(tab.id);
-      chrome.tabs.remove(tab.id, function() { });
-    });
-  }
-});
-
-chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
-  if (message.logout){   //for logging out
-    chrome.tabs.create({url: logoutURL, active: false}, function () {
-      console.log("logging out");
-    });
-  }
-});
-
 chrome.runtime.onStartup.addListener(function () {
-  var isOpen = false;
-  chrome.tabs.query({url: "http://phc.prontonetworks.com/*"},function(tabs) {
-    var tab = tabs[0];
-    console.log(tab.id);
-    isOpen = true;
+  /*chrome.storage.sync.get(null,function(data){
+    var username = data.username;
+    var password = data.password;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST","http://phc.prontonetworks.com/cgi-bin/authlogin",true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("userId="+username+"&password="+password+"&serviceName=ProntoAuthentication&Submit22=Login");
+    */
   });
-  if(isOpen ==  false){
-    chrome.tabs.create({url: loginURL, active: false}, function () {
-      console.log("login opened");
-    });
-  }
 });
