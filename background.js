@@ -1,7 +1,9 @@
 chrome.runtime.onStartup.addListener(function () {
-  chrome.browserAction.setIcon({
-          path: './icon16.png'
-      });
+  chrome.browserAction.setIcon({path: './ic_pronto_bw_16.png'});
+  login();
+});
+
+function login() {
   chrome.storage.sync.get(null,function(data) {
     var username = data.username;
     var password = data.password;
@@ -27,21 +29,26 @@ chrome.runtime.onStartup.addListener(function () {
       var already_logged_in = patt_already.test(xmlhttp.responseText);
 
       if(login_success){
-        setTimeout(function() { alert("Logged in successfully"); }, 700);
+        //setTimeout(function() { alert("Logged in successfully"); }, 700);
+        chrome.browserAction.setIcon({path: './icon16.png'});
+        return 0;
       }
       if(login_error){
-        setTimeout(function() { alert("Incorrect credentials"); }, 700);
+        alert("Incorrect credentials");
+        return 1;
       }
       if(quota_over){
-        setTimeout(function() { alert("Your quota is over"); }, 700);
+        alert("Your quota is over");
+        return 2;
       }
       if(already_logged_in){
-        //setTimeout(function() { alert("Already logged in"); }, 700); //annoying, no need
         console.log("Already Logged in");
+        chrome.browserAction.setIcon({path: './icon16.png'});
+        return 3;
       }
     };
   });
-});
+}
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse){

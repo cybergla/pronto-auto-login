@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if(res4){
           setStatus('Already Logged In');
+          chrome.runtime.sendMessage({'setIconColor':true});
           console.log("already logged in");
         }
 
@@ -64,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     });
   });
+
   logoutButton.addEventListener('click',function logout() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET","http://phc.prontonetworks.com/cgi-bin/authlogout",true);
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
           setStatus('No active session exists');
         }
         else if(!res1 && !res2){
-          setStatus('Could not logout');
+          setStatus('Unknown error occurred :(');
         }
         chrome.runtime.sendMessage({'setIconBw':true});
       }
