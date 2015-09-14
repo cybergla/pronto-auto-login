@@ -15,12 +15,15 @@ try {
 try {
   //get text from the login failed page (usually opens up when incorrect username/password is given)
   //kinda hacky
-  var err = document.getElementsByClassName('errorText10')[0];    //get an element in the page that says "Sorry, please check your..."
-  var err2 = document.getElementsByName('dynamicMacAuth')[0];     //happens when username+password is null, redirects to a page
-                                                                  //that contains a checkbox field with the name "dynamicMacAuth"
-  console.log(err2);
-  console.log(err);
-  if(err || err2){
+  //var err = document.getElementsByClassName('errorText10')[0];    //get an element in the page that says "Sorry, please check your..."
+  //var err2 = document.getElementsByName('dynamicMacAuth')[0];     //when username+password is null
+
+  var patt1 = /Sorry/i;
+  var incorrect_cred = patt1.test(document.getElementsByTagName('html')[0].innerHTML)
+  console.log(document.getElementsByTagName('html')[0].innerHTML);
+  console.log(incorrect_cred);
+  if(incorrect_cred){
+    console.log("Incorrect credentials! Please check your Username and Password.")
     alert("Incorrect credentials! Please check your Username and Password.");
     chrome.runtime.sendMessage({error : true});     //close tab
   }

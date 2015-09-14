@@ -1,5 +1,4 @@
 chrome.runtime.onStartup.addListener(function () {
-  chrome.browserAction.setIcon({path: './ic_pronto_bw_16.png'});
   login();
 });
 
@@ -29,7 +28,6 @@ function login() {
       var already_logged_in = patt_already.test(xmlhttp.responseText);
 
       if(login_success){
-        chrome.browserAction.setIcon({path: './icon16.png'});
         return 0;
       }
       if(login_error){
@@ -42,21 +40,20 @@ function login() {
       }
       if(already_logged_in){
         console.log("Already Logged in");
-        chrome.browserAction.setIcon({path: './icon16.png'});
         return 3;
       }
-      
     };
   });
 }
 
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse){
-    if(request.setIconColor == true){
-      chrome.browserAction.setIcon({path: './icon16.png'});
-    }
-    if(request.setIconBw ==  true){
-      chrome.browserAction.setIcon({path: './ic_pronto_bw_16.png'});
-    }
-  }
-);
+  function(request, sender, sendResponse) {
+      if(request.error == true){
+        console.log("Incorrect cred, closing tab");
+        chrome.tabs.query({url: "http://phc.prontonetworks.com/*"},function(tab) {
+          var tab = tab[0];
+          console.log(tab.id);
+          chrome.tabs.remove(tab.id, function() { });
+        });
+      }
+  });
