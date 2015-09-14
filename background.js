@@ -29,7 +29,6 @@ function login() {
       var already_logged_in = patt_already.test(xmlhttp.responseText);
 
       if(login_success){
-        //setTimeout(function() { alert("Logged in successfully"); }, 700);
         chrome.browserAction.setIcon({path: './icon16.png'});
         return 0;
       }
@@ -46,6 +45,7 @@ function login() {
         chrome.browserAction.setIcon({path: './icon16.png'});
         return 3;
       }
+      
     };
   });
 }

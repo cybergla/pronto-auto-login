@@ -15,6 +15,12 @@
     "persistent": false,
     "scripts": ["background.js"]
   },
+  "content_scripts":
+  [{
+    "matches" : ["http://phc.prontonetworks.com/*"],
+    "js" : ["content.js"],
+    "run_at" : "document_end"
+  }],
   "permissions": [
     "tabs",
     "storage",
