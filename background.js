@@ -30,6 +30,51 @@ var opt_quota_over = {
   iconUrl: "icon128.png"
 }
 
+var opt_logout_success = {
+  type: "basic",
+  title: "Logged Out",
+  message: "Please login again to use the internet",
+  iconUrl: "icon128.png"
+}
+
+var opt_logout_fail = {
+  type: "basic",
+  title: "No Active Session",
+  message: "You are already logged out!",
+  iconUrl: "icon128.png"
+}
+
+
+function logout(){
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET","http://phc.prontonetworks.com/cgi-bin/authlogout",true);
+  xmlhttp.send();
+  xmlhttp.onreadystatechange=function(){
+    if (xmlhttp.readyState==4 && xmlhttp.status==200){
+      var patt_logout = new RegExp(/successfully logged out/i);
+      var patt_no_active = new RegExp(/no active session/i);
+      var res1 = patt_logout.test(xmlhttp.responseText);
+      var res2 = patt_no_active.test(xmlhttp.responseText);
+      if(res1){
+        chrome.notifications.create('id5',opt_logout_success,function () {
+          console.log("logged out");
+        });
+        chrome.runtime.sendMessage({logout_success: true});
+      }
+      if(res2){
+        chrome.notifications.create('id6',opt_logout_fail,function () {
+          console.log("active session");
+        });
+        chrome.runtime.sendMessage({logout_success: false});
+      }
+      else if(!res1 && !res2){
+        
+        chrome.runtime.sendMessage({logout_unknown_error: true});
+      }
+    }
+  }
+}
+
 function login() {
   chrome.storage.sync.get(null,function(data) {
     var username = data.username;
@@ -70,14 +115,14 @@ function login() {
         return 1;
       }
       if(quota_over){
-        chrome.notifications.create('id1',opt_quota_over,function () {
+        chrome.notifications.create('id3',opt_quota_over,function () {
           console.log("quota over");
         });
         chrome.runtime.sendMessage({quota_over: true});
         return 2;
       }
       if(already_logged_in){
-        chrome.notifications.create('id1',opt_already_logged_in,function () {
+        chrome.notifications.create('id4',opt_already_logged_in,function () {
           console.log("already_logged_in");
         });
         chrome.runtime.sendMessage({already_logged_in: true});
@@ -100,5 +145,9 @@ chrome.runtime.onMessage.addListener(
       if(request.login == true){
         console.log("logging in");
         login();
+      }
+      if(request.logout == true){
+        console.log("logging out");
+        logout();
       }
   });

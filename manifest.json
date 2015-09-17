@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Pronto Auto Login",
-  "version": "0.1.2",
+  "version": "0.2.1",
   "browser_action":
   {
     "default_icon": "icon16.png",
@@ -12,7 +12,6 @@
           "128": "icon128.png" },
   "background":
   {
-    "persistent": false,
     "scripts": ["background.js"]
   },
   "content_scripts":
