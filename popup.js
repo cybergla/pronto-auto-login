@@ -22,6 +22,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if(request.login_success == true){
           setStatus('Logged in');
         }
+        if(request.login_success == false){
+          setStatus('Incorrect credentials');
+        }
+        if(request.quota_over == true){
+          setStatus('Quota over');
+        }
+        if(request.already_logged_in == true){
+          setStatus('Already logged in');
+        }
     });
   });
 

@@ -16,10 +16,12 @@ try {
   //get text from the login failed page (usually opens up when incorrect username/password is given)
   //kinda hacky
   //var err = document.getElementsByClassName('errorText10')[0];    //get an element in the page that says "Sorry, please check your..."
-  //var err2 = document.getElementsByName('dynamicMacAuth')[0];     //when username+password is null
+  var err2 = document.getElementsByName('dynamicMacAuth')[0];     //when username+password is null
 
-  var patt1 = /Sorry/i;
-  var incorrect_cred = patt1.test(document.getElementsByTagName('html')[0].innerHTML)
+  var patt1 = /Sorry, please check/i;
+  var patt2 = /try again/i;
+  var responseText = document.getElementsByTagName('html')[0].innerHTML;
+  var incorrect_cred = patt1.test(responseText) || patt2.test(responseText) || err2;
   console.log(document.getElementsByTagName('html')[0].innerHTML);
   console.log(incorrect_cred);
   if(incorrect_cred){

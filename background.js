@@ -16,9 +16,9 @@ var opt_login_error = {
   iconUrl: "icon128.png"
 }
 
-var opt_alrady_logged_in = {
+var opt_already_logged_in = {
   type: "basic",
-  title: "Alrady logged in",
+  title: "Already logged in",
   message: "You can browser the web normally",
   iconUrl: "icon128.png"
 }
@@ -29,9 +29,6 @@ var opt_quota_over = {
   message: "Sorry, your free quota is over :(",
   iconUrl: "icon128.png"
 }
-
-
-
 
 function login() {
   chrome.storage.sync.get(null,function(data) {
@@ -80,7 +77,7 @@ function login() {
         return 2;
       }
       if(already_logged_in){
-        chrome.notifications.create('id1',opt_alrady_logged_in,function () {
+        chrome.notifications.create('id1',opt_already_logged_in,function () {
           console.log("already_logged_in");
         });
         chrome.runtime.sendMessage({already_logged_in: true});
