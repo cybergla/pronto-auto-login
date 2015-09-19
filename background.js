@@ -1,5 +1,5 @@
 chrome.runtime.onStartup.addListener(function () {
-  login();
+  login(true);
 });
 
 var opt_login_success = {
@@ -68,14 +68,15 @@ function logout(){
         chrome.runtime.sendMessage({logout_success: false});
       }
       else if(!res1 && !res2){
-        
+
         chrome.runtime.sendMessage({logout_unknown_error: true});
       }
     }
   }
 }
 
-function login() {
+function login(firstRun) {
+  firstRun || (firstRun = false);
   chrome.storage.sync.get(null,function(data) {
     var username = data.username;
     var password = data.password;
@@ -122,11 +123,13 @@ function login() {
         return 2;
       }
       if(already_logged_in){
-        chrome.notifications.create('id4',opt_already_logged_in,function () {
-          console.log("already_logged_in");
-        });
-        chrome.runtime.sendMessage({already_logged_in: true});
-        return 3;
+        if(!firstRun){
+          chrome.notifications.create('id4',opt_already_logged_in,function () {
+            console.log("already_logged_in");
+          });
+          chrome.runtime.sendMessage({already_logged_in: true});
+          return 3;
+        }
       }
     };
   });
