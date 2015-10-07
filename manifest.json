@@ -21,6 +21,7 @@
     "run_at" : "document_end"
   }],
   "permissions": [
+    "webRequest",
     "tabs",
     "storage",
     "notifications",

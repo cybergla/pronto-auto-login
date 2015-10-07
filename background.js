@@ -83,57 +83,69 @@ function login(firstRun) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST","http://phc.prontonetworks.com/cgi-bin/authlogin",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.timeout = 4000;
+    xmlhttp.ontimeout = function () {
+      console.log('Request Timed out');
+      //TODO: add user facing alert here
+    }
     xmlhttp.send("userId="+username+"&password="+password+"&serviceName=ProntoAuthentication&Submit22=Login");
     xmlhttp.onreadystatechange = function () {
-      if ( 4 != xmlhttp.readyState ) {
-          return;
-      }
-      if ( 200 != xmlhttp.status ) {
-          return;
-      }
-      var patt_success = /congratulations/i;
-      var patt_already = /already logged in/i;
-      var patt_quota_over = /quota is over/i;
-      var patt_error = /sorry/i;
-
-      var login_success = patt_success.test(xmlhttp.responseText)
-      var login_error = patt_error.test(xmlhttp.responseText);
-      var quota_over = patt_quota_over.test(xmlhttp.responseText);
-      var already_logged_in = patt_already.test(xmlhttp.responseText);
-
-      if(login_success){
-        chrome.notifications.create('id1',opt_login_success,function () {
-          console.log("logged in");
-        });
-        chrome.runtime.sendMessage({login_success: true});
-        return 0;
-      }
-      if(login_error){
-        chrome.notifications.create('id2',opt_login_error,function () {
-          console.log("error logging in");
-        });
-        chrome.runtime.sendMessage({login_success: false});
-        return 1;
-      }
-      if(quota_over){
-        chrome.notifications.create('id3',opt_quota_over,function () {
-          console.log("quota over");
-        });
-        chrome.runtime.sendMessage({quota_over: true});
-        return 2;
-      }
-      if(already_logged_in){
-        if(!firstRun){
-          chrome.notifications.create('id4',opt_already_logged_in,function () {
-            console.log("already_logged_in");
-          });
-          chrome.runtime.sendMessage({already_logged_in: true});
-          return 3;
-        }
+      if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+          var patt_success = /congratulations/i;
+          var patt_already = /already logged in/i;
+          var patt_quota_over = /quota is over/i;
+          var patt_error = /sorry/i;
+          var login_success = patt_success.test(xmlhttp.responseText)
+          var login_error = patt_error.test(xmlhttp.responseText);
+          var quota_over = patt_quota_over.test(xmlhttp.responseText);
+          var already_logged_in = patt_already.test(xmlhttp.responseText);
+          if(login_success){
+            chrome.notifications.create('id1',opt_login_success,function () {
+              console.log("logged in");
+            });
+            chrome.runtime.sendMessage({login_success: true});
+            return 0;
+          }
+          if(login_error){
+            chrome.notifications.create('id2',opt_login_error,function () {
+              console.log("error logging in");
+            });
+            chrome.runtime.sendMessage({login_success: false});
+            return 1;
+          }
+          if(quota_over){
+            chrome.notifications.create('id3',opt_quota_over,function () {
+              console.log("quota over");
+            });
+            chrome.runtime.sendMessage({quota_over: true});
+            return 2;
+          }
+          if(already_logged_in){
+            if(!firstRun){
+              chrome.notifications.create('id4',opt_already_logged_in,function () {
+                console.log("already_logged_in");
+              });
+              chrome.runtime.sendMessage({already_logged_in: true});
+              return 3;
+            }
+          }
       }
     };
   });
 }
+
+//TODO: add user alerts here too
+chrome.webRequest.onErrorOccurred.addListener(function(details) {
+    if (details.error == 'net::ERR_INTERNET_DISCONNECTED') {
+        console.log('Wifi Disconnected', details);
+    }
+    if(details.error == 'net::ERR_CONNECTION_TIMED_OUT'){
+      console.log('Request Timed Out',details);
+    }
+}, {
+    urls: ['*://*/*'],
+    types: ['xmlhttprequest']
+});
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
