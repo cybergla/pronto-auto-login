@@ -14,8 +14,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  chrome.runtime.onMessage.addListener(
+    function(request,sender,sendResponse){
+      if(request.network_error){
+        setStatus(request.status);
+      }
+    }
+  );
+
   loginButton.addEventListener('click', function () {
-    setStatus('logging in, please wait...');
+    setStatus('Logging in, please wait...');
     chrome.runtime.sendMessage({login: true});
     chrome.runtime.onMessage.addListener(
       function(request,sender,sendResponse){
@@ -30,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if(request.already_logged_in == true){
           setStatus('Already logged in');
+        }
+        if(request.login_timed_out == true){
+          setStatus('Request Timed out');
         }
     });
   });
