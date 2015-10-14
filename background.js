@@ -135,19 +135,19 @@ function login(firstRun) {
             chrome.runtime.sendMessage({login_success: true});
             return 0;
           }
-          else if(patt_error.test(xmlhttp.responseText)){
-            chrome.notifications.create('id2',opt_login_error,function () {
-              console.log("error logging in");
-            });
-            chrome.runtime.sendMessage({login_success: false});
-            return 1;
-          }
           else if(patt_quota_over.test(xmlhttp.responseText)){
             chrome.notifications.create('id3',opt_quota_over,function () {
               console.log("quota over");
             });
             chrome.runtime.sendMessage({quota_over: true});
             return 2;
+          }
+          else if(patt_error.test(xmlhttp.responseText)){
+            chrome.notifications.create('id2',opt_login_error,function () {
+              console.log("error logging in");
+            });
+            chrome.runtime.sendMessage({login_success: false});
+            return 1;
           }
           else if(patt_already.test(xmlhttp.responseText)){
             if(!firstRun){
