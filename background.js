@@ -79,10 +79,9 @@ function logout(){
   xmlhttp.send();
   xmlhttp.onreadystatechange=function(){
     if (xmlhttp.readyState==4 && xmlhttp.status==200){
-      var patt_logout = new RegExp(/successfully logged out/i);
-      var patt_no_active = new RegExp(/no active session/i);
-      //var res1 = patt_logout.test(xmlhttp.responseText);
-      //var res2 = patt_no_active.test(xmlhttp.responseText);
+      var patt_logout = new RegExp("successfully logged out","i");
+      var patt_no_active = new RegExp("no active session","i");
+      
       if(patt_logout.test(xmlhttp.responseText)){
         chrome.notifications.create('id5',opt_logout_success,function () {
           console.log("logged out");
@@ -126,10 +125,7 @@ function login(firstRun) {
           var patt_quota_over = /quota is over/i;
           var patt_sorry = /sorry/i;
           var patt_tryAgain = /try again/i;
-          //var login_success = patt_success.test(xmlhttp.responseText)
-          //var login_error = patt_sorry.test(xmlhttp.responseText);
-          //var quota_over = patt_quota_over.test(xmlhttp.responseText);
-          //var already_logged_in = patt_already.test(xmlhttp.responseText);
+          
           if(patt_success.test(xmlhttp.responseText)){
             chrome.notifications.create('id6',opt_login_success,function () {
             });
