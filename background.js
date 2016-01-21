@@ -124,9 +124,10 @@ function login(firstRun) {
           var patt_success = /congratulations/i;
           var patt_already = /already logged in/i;
           var patt_quota_over = /quota is over/i;
-          var patt_error = /sorry/i;
+          var patt_sorry = /sorry/i;
+          var patt_tryAgain = /try again/i;
           //var login_success = patt_success.test(xmlhttp.responseText)
-          //var login_error = patt_error.test(xmlhttp.responseText);
+          //var login_error = patt_sorry.test(xmlhttp.responseText);
           //var quota_over = patt_quota_over.test(xmlhttp.responseText);
           //var already_logged_in = patt_already.test(xmlhttp.responseText);
           if(patt_success.test(xmlhttp.responseText)){
@@ -142,7 +143,7 @@ function login(firstRun) {
             chrome.runtime.sendMessage({quota_over: true});
             return 2;
           }
-          else if(patt_error.test(xmlhttp.responseText)){
+          else if(patt_sorry.test(xmlhttp.responseText) && patt_tryAgain.test(xmlhttp.responseText)){
             chrome.notifications.create('id2',opt_login_error,function () {
               console.log("error logging in");
             });
