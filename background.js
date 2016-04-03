@@ -19,7 +19,7 @@ var opt_login_error = {
 var opt_already_logged_in = {
   type: "basic",
   title: "Already logged in",
-  message: "You can browser the web normally",
+  message: "You can browse the web normally",
   iconUrl: "icon128.png"
 }
 
