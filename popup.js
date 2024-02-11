@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   loginButton.addEventListener('click', function () {
     setStatus('Logging in, please wait...');
-    chrome.runtime.sendMessage({login: true});
+    chrome.runtime.sendMessage({
+      login: true,
+      username: document.getElementById('username').value,
+      password: document.getElementById('password').value
+    });
     chrome.runtime.onMessage.addListener(
       function(request,sender,sendResponse){
         if(request.login_success == true){

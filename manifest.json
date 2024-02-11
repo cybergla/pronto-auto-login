@@ -1,31 +1,40 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Pronto Auto Login",
   "version": "0.2.6",
   "description": "An extension that automatically logs you into VOLSBB (VIT College Wifi)",
-  "browser_action":
-  {
-    "default_icon": "icon16.png",
-    "default_popup": "popup.html"
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
   },
-  "icons": { "16": "icon16.png",
-           "48": "icon48.png",
-          "128": "icon128.png" },
-  "background":
-  {
-    "scripts": ["background.js"]
+  "background": {
+    "service_worker": "service_worker.js"
   },
-  "content_scripts":
-  [{
-    "matches" : ["http://phc.prontonetworks.com/*"],
-    "js" : ["content.js"],
-    "run_at" : "document_end"
-  }],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://phc.prontonetworks.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
   "permissions": [
     "webRequest",
     "tabs",
     "storage",
-    "notifications",
-    "http://phc.prontonetworks.com/*"
-    ]
+    "notifications"
+  ],
+  "action": {
+    "default_icon": "icon16.png",
+    "default_popup": "popup.html"
+  },
+  "content_security_policy": {},
+  "host_permissions": [
+    "http://phc.prontonetworks.com/*",
+    "http://127.0.0.1:5000/*"
+  ]
 }
