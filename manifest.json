@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pronto Auto Login",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "An extension that automatically logs you into VOLSBB (VIT College Wifi)",
   "icons": {
     "16": "icon16.png",
