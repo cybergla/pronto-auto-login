@@ -34,8 +34,7 @@
   },
   "content_security_policy": {},
   "host_permissions": [
-    "http://phc.prontonetworks.com/*",
-    "http://127.0.0.1:5000/*"
+    "http://phc.prontonetworks.com/*"
   ],
   "author": "Tanay Deshmukh",
   "homepage_url": "https://github.com/cybergla/pronto-auto-login/",
