@@ -23,10 +23,10 @@
     }
   ],
   "permissions": [
-    "webRequest",
-    "tabs",
     "storage",
-    "notifications"
+    "notifications",
+    "tabs",
+    "webRequest"
   ],
   "action": {
     "default_icon": "icon16.png",
@@ -37,8 +37,5 @@
     "http://phc.prontonetworks.com/*"
   ],
   "author": "Tanay Deshmukh",
-  "homepage_url": "https://github.com/cybergla/pronto-auto-login/",
-  "optional_permissions": [
-    "notifications"
-  ]
+  "homepage_url": "https://github.com/cybergla/pronto-auto-login/"
 }
