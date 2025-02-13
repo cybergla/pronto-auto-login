@@ -86,20 +86,26 @@ function logout() {
     var patt_no_active = new RegExp("no active session", "i");
 
     if (patt_logout.test(responseText)) {
-      chrome.notifications.create('id5', opt_logout_success, function () {
-        console.log("logged out");
-      });
+      showNotification('id5', opt_logout_success);
       chrome.runtime.sendMessage({ logout_success: true });
     } else if (patt_no_active.test(responseText)) {
-      chrome.notifications.create('id6', opt_logout_fail, function () {
-        console.log("active session");
-      });
+      showNotification('id6', opt_logout_fail);
       chrome.runtime.sendMessage({ logout_success: false });
     } else {
       chrome.runtime.sendMessage({ logout_unknown_error: true });
     }
   }).catch(error => {
     console.error('There was a problem with the logout fetch operation:', error);
+  });
+}
+
+function showNotification(id, options) {
+  chrome.notifications.create(id, options, (notificationId) => {
+    if (chrome.runtime.lastError) {
+      console.error('Notification error:', chrome.runtime.lastError);
+    } else {
+      console.log('Notification shown successfully:', notificationId);
+    }
   });
 }
 
@@ -110,16 +116,14 @@ function login(firstRun, formUser, formPassword) {
     var username = (typeof formUser === undefined) ? data.username : formUser;
     var password = (typeof formPassword === undefined) ? data.password : formPassword;
 
-    // Create an AbortController and obtain the signal
     const controller = new AbortController();
     const signal = controller.signal;
 
-    // Set up a timeout for the fetch operation
     const timeoutId = setTimeout(() => {
-      controller.abort(); // Abort the fetch operation when the timeout occurs
+      controller.abort();
     }, 7000);
 
-    fetch("http://127.0.0.1:5000/authlogin", {
+    fetch("http://phc.prontonetworks.com/cgi-bin/authlogin", {
       method: "POST",
       headers: {
         "Content-type": "application/x-www-form-urlencoded"
@@ -141,27 +145,20 @@ function login(firstRun, formUser, formPassword) {
       var patt_tryAgain = /try again/i;
 
       if (patt_success.test(responseText)) {
-        chrome.notifications.create('id6', opt_login_success, function () {
-        });
+        showNotification('id6', opt_login_success);
         chrome.runtime.sendMessage({ login_success: true });
         return 0;
       } else if (patt_quota_over.test(responseText)) {
-        chrome.notifications.create('id3', opt_quota_over, function () {
-          console.log("quota over");
-        });
+        showNotification('id3', opt_quota_over);
         chrome.runtime.sendMessage({ quota_over: true });
         return 2;
       } else if (patt_sorry.test(responseText) && patt_tryAgain.test(responseText)) {
-        chrome.notifications.create('id2', opt_login_error, function () {
-          console.log("error logging in");
-        });
+        showNotification('id2', opt_login_error);
         chrome.runtime.sendMessage({ login_success: false });
         return 1;
       } else if (patt_already.test(responseText)) {
         if (!firstRun) {
-          chrome.notifications.create('id4', opt_already_logged_in, function () {
-            console.log("already_logged_in");
-          });
+          showNotification('id4', opt_already_logged_in);
           chrome.runtime.sendMessage({ already_logged_in: true });
           return 3;
         }
@@ -172,9 +169,7 @@ function login(firstRun, formUser, formPassword) {
       console.error('Error during fetch operation:', error);
       if (error.name === 'AbortError') {
         chrome.runtime.sendMessage({ login_timed_out: true });
-        chrome.notifications.create('id_timeout', opt_login_timeout, function () {
-          console.log("Req timeout notification");
-        });
+        showNotification('id_timeout', opt_login_timeout);
       }
     }).finally(() => {
       clearTimeout(timeoutId);
