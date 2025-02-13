@@ -81,7 +81,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Version History
 
-- v0.2.6 - Current stable release
+- v0.3.0 - Current stable release for Manifest V3
+- v0.2.6 - Last release for Manifest V2 (will be deprecated soon)
 - [View all versions](https://github.com/cybergla/pronto-auto-login/releases)
 
 ## Support
