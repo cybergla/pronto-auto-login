@@ -14,48 +14,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  chrome.runtime.onMessage.addListener(
-    function(request,sender,sendResponse){
-      if(request.network_error){
-        setStatus(request.status);
-      }
+  // Set up message listener once
+  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.login_success === true) {
+      setStatus('Logged in');
+    } else if (request.login_success === false) {
+      setStatus('Incorrect credentials');
+    } else if (request.network_error) {
+      setStatus(request.status);
     }
-  );
+  });
 
-  loginButton.addEventListener('click', function () {
+  // Button click handlers only send messages
+  loginButton.addEventListener('click', function() {
     setStatus('Logging in, please wait...');
-    chrome.runtime.sendMessage({login: true});
-    chrome.runtime.onMessage.addListener(
-      function(request,sender,sendResponse){
-        if(request.login_success == true){
-          setStatus('Logged in');
-        }
-        if(request.login_success == false){
-          setStatus('Incorrect credentials');
-        }
-        if(request.quota_over == true){
-          setStatus('Quota over');
-        }
-        if(request.already_logged_in == true){
-          setStatus('Already logged in');
-        }
-        if(request.login_timed_out == true){
-          setStatus('Request Timed out');
-        }
+    chrome.runtime.sendMessage({
+      login: true,
+      username: document.getElementById('username').value,
+      password: document.getElementById('password').value
     });
   });
 
   logoutButton.addEventListener('click',function () {
     chrome.runtime.sendMessage({logout: true});
-    chrome.runtime.onMessage.addListener(
-      function(request,sender,sendResponse){
-        if(request.logout_success == true){
-          setStatus('Logged out');
-        }
-        if(request.logout_success == false){
-          setStatus('No Active Session');
-        }
-    });
   });
 
   //get new login data from user
